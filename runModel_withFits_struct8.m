@@ -8,7 +8,7 @@ type = 'weighted';
 Data_time = importdata('tspan.mat');
 
 %--- Model prediction timepoints
-predTime = [0:60:6*3600];
+predTime = [0:60:24*3600];
 
 Data_time_minutes = Data_time./60;
 predTime_minutes =predTime./60;
