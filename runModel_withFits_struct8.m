@@ -5,10 +5,10 @@ clear all
 close all
 type = 'weighted';
 
-Data_time = importdata('tspan.mat'); 
+Data_time = importdata('tspan.mat');
 
 %--- Model prediction timepoints
-predTime = [0:60:24*3600];
+predTime = [0:60:6*3600];
 
 Data_time_minutes = Data_time./60;
 predTime_minutes =predTime./60;
@@ -26,6 +26,7 @@ ALL_params = importdata('free_params_struct8.mat');
  var = 1115;
 selected_paramSet = ALL_params(var,:);
 free_params1 = selected_paramSet(1,:);
+i=1;
 
 %--- load free init values
 free_initValues = importdata('data/samples/free_initValues.mat');
@@ -272,40 +273,58 @@ params(34,1) = k17inB;
 params(61,1) = k35;
 
 % Set options
+
 options = odeset('RelTol',1e-9,'AbsTol',1e-12,'NonNegative',[1:length(initvalues)]);
 
 % simulate the model
+
 [~, predConc] = ode15s(@core_file_struct8,predTime,initvalues,options,params);
-  
+
 % Calculated quantities
+
+cytosolic_pStatA = predConc(:,13) + 2.*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + predConc(:,24) + predConc(:,27);
+cytosolic_pStatB = predConc(:,14) + 2.*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + predConc(:,25) + predConc(:,26);
+
+nuclear_pStatA = 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + 2*predConc(:,37) + predConc(:,38) + predConc(:,40) + predConc(:,43);
+nuclear_pStatB = 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + 2*predConc(:,39) + predConc(:,38) + predConc(:,41) + predConc(:,42);
+
+npA_ratio_cpA = nuclear_pStatA./cytosolic_pStatA;
+npB_ratio_cpB = nuclear_pStatB./cytosolic_pStatB;
+
 total_pStatA(:,i) = predConc(:,13) +2.*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + predConc(:,24) + predConc(:,27) + 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + 2*predConc(:,37) + predConc(:,38) + predConc(:,40) + predConc(:,43);
 total_pStatB(:,i) = predConc(:,14) +2.*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + predConc(:,25) + predConc(:,26) + 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + 2*predConc(:,39) + predConc(:,38) + predConc(:,41) + predConc(:,42);
 
-pStatA_norm(:,i) = total_pStatA(:,i)./total_pStatA(31,i);% normalized to 30 minute
-pStatB_norm(:,i) = total_pStatB(:,i)./total_pStatB(31,i);% normalized to 30 minute
+% pStatA_norm(:,i) = total_pStatA(:,i)./total_pStatA(31,i);% normalized to 30 minute
+% pStatB_norm(:,i) = total_pStatB(:,i)./total_pStatB(31,i);% normalized to 30 minute
 
-Stat_cytoA(:,i) = predConc(:,3) + predConc(:,11) + predConc(:,13) + 2*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + 2*predConc(:,24) + predConc(:,26) + predConc(:,27) + predConc(:,48);
-Stat_cytoB(:,i) = predConc(:,4) + predConc(:,12) + predConc(:,14) + 2*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + 2*predConc(:,25) + predConc(:,26) + predConc(:,27) + predConc(:,49);
+cytosolic_statA(:,i) = predConc(:,3) + predConc(:,11) + predConc(:,13) + 2*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + 2*predConc(:,24) + predConc(:,26) + predConc(:,27) + predConc(:,48);
+cytosolic_statB(:,i) = predConc(:,4) + predConc(:,12) + predConc(:,14) + 2*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + 2*predConc(:,25) + predConc(:,26) + predConc(:,27) + predConc(:,49);
 
-Stat_nucleusA(:,i) = 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + predConc(:,35) + 2*predConc(:,37) + predConc(:,38) + 2*predConc(:,40) + predConc(:,42) + predConc(:,43);
-Stat_nucleusB(:,i) = 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + predConc(:,36) + 2*predConc(:,39) + predConc(:,38) + 2*predConc(:,41) + predConc(:,42) + predConc(:,43);
+nuclear_statA(:,i) = 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + predConc(:,35) + 2*predConc(:,37) + predConc(:,38) + 2*predConc(:,40) + predConc(:,42) + predConc(:,43);
+nuclear_statB(:,i) = 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + predConc(:,36) + 2*predConc(:,39) + predConc(:,38) + 2*predConc(:,41) + predConc(:,42) + predConc(:,43);
 
-nucleus_cyto_ratioA(:,i) = Stat_nucleusA(:,i)./Stat_cytoA(:,i);
-nucleus_cyto_ratioB(:,i) = Stat_nucleusB(:,i)./Stat_cytoB(:,i);
+% total_statA = nuclear_statA*Vratio + cytosolic_statA;
+% total_statB = nuclear_statB*Vratio + cytosolic_statB;
 
-transloc_predA(:,i) = nucleus_cyto_ratioA(:,i);
-transloc_predB(:,i) = nucleus_cyto_ratioB(:,i);
+npAcpA_ratio_totA = (nuclear_pStatA*Vratio + cytosolic_pStatA)./totalSTAT;
+npBcpB_ratio_totB = (nuclear_pStatB*Vratio + cytosolic_pStatB)./totalSTAT;
 
-rec_total(:,i) = predConc(:,2) + predConc(:,8) + 2*predConc(:,9) + 2*predConc(:,10) + 2*predConc(:,11) + 2*predConc(:,12) + 2*predConc(:,18) + 2*predConc(:,47) + 2*predConc(:,48) + 2*predConc(:,49) + 2*predConc(:,50);
-rec_internalized = 1 - rec_total(:,i)./initvalues(2);
-intern_pred(i) = rec_internalized(31);
+% nucleus_cyto_ratioA(:,i) = Stat_nucleusA(:,i)./Stat_cytoA(:,i);
+% nucleus_cyto_ratioB(:,i) = Stat_nucleusB(:,i)./Stat_cytoB(:,i);
+
+% transloc_predA(:,i) = nucleus_cyto_ratioA(:,i);
+% transloc_predB(:,i) = nucleus_cyto_ratioB(:,i);
+
+% rec_total(:,i) = predConc(:,2) + predConc(:,8) + 2*predConc(:,9) + 2*predConc(:,10) + 2*predConc(:,11) + 2*predConc(:,12) + 2*predConc(:,18) + 2*predConc(:,47) + 2*predConc(:,48) + 2*predConc(:,49) + 2*predConc(:,50);
+% rec_internalized = 1 - rec_total(:,i)./initvalues(2);
+% intern_pred(i) = rec_internalized(31);
 
 % Bcl fold change
-Bcl(:,i) = predConc(:,56)./predConc(1,56);
+% Bcl(:,i) = predConc(:,56)./predConc(1,56);
 
  % pJAK2
-total_pJAK2 = predConc(:,10) + predConc(:,11)+ predConc(:,12)+ predConc(:,18)+ predConc(:,47)+ predConc(:,48)+ predConc(:,49)+ predConc(:,50);
-pJAK2_norm(:,i) = total_pJAK2./total_pJAK2(11); %Normalized to 10 minute
+% total_pJAK2 = predConc(:,10) + predConc(:,11)+ predConc(:,12)+ predConc(:,18)+ predConc(:,47)+ predConc(:,48)+ predConc(:,49)+ predConc(:,50);
+% pJAK2_norm(:,i) = total_pJAK2./total_pJAK2(11); %Normalized to 10 minute
 
 
 
