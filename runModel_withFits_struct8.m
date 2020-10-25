@@ -26,7 +26,6 @@ ALL_params = importdata('free_params_struct8.mat');
  var = 1115;
 selected_paramSet = ALL_params(var,:);
 free_params1 = selected_paramSet(1,:);
-i=1;
 
 %--- load free init values
 free_initValues = importdata('data/samples/free_initValues.mat');
@@ -278,30 +277,39 @@ options = odeset('RelTol',1e-9,'AbsTol',1e-12,'NonNegative',[1:length(initvalues
 
 % simulate the model
 
-[~, predConc] = ode15s(@core_file_struct8,predTime,initvalues,options,params);
+parfor n = 1 : num_samples
+	selected_initvalues = initvalues;
+	selected_initvalues(2,1) = free_initValues(n,1);
+	selected_initvalues(5,1) = free_initValues(n,2);
+	selected_initvalues(6,1) = free_initValues(n,3);
+	selected_initvalues(7,1) = free_initValues(n,4);
+
+	[~, predConc] = ode15s(@core_file_struct8,predTime,selected_initvalues,options,params);
+	results(n,:,:) = predConc;
+end
 
 % Calculated quantities
 
-cytosolic_pStatA = predConc(:,13) + 2.*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + predConc(:,24) + predConc(:,27);
-cytosolic_pStatB = predConc(:,14) + 2.*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + predConc(:,25) + predConc(:,26);
+cytosolic_pStatA = results(:,:,13) + 2.*results(:,:,15) + results(:,:,16) + results(:,:,19) + 2*results(:,:,21) + results(:,:,23) + results(:,:,24) + results(:,:,27);
+cytosolic_pStatB = results(:,:,14) + 2.*results(:,:,17) + results(:,:,16) + results(:,:,20) + 2*results(:,:,22) + results(:,:,23) + results(:,:,25) + results(:,:,26);
 
-nuclear_pStatA = 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + 2*predConc(:,37) + predConc(:,38) + predConc(:,40) + predConc(:,43);
-nuclear_pStatB = 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + 2*predConc(:,39) + predConc(:,38) + predConc(:,41) + predConc(:,42);
+nuclear_pStatA = 2*results(:,:,28) + results(:,:,29) + results(:,:,31) + results(:,:,33) + 2*results(:,:,37) + results(:,:,38) + results(:,:,40) + results(:,:,43);
+nuclear_pStatB = 2*results(:,:,30) + results(:,:,29) + results(:,:,32) + results(:,:,34) + 2*results(:,:,39) + results(:,:,38) + results(:,:,41) + results(:,:,42);
 
 npA_ratio_cpA = nuclear_pStatA./cytosolic_pStatA;
 npB_ratio_cpB = nuclear_pStatB./cytosolic_pStatB;
 
-total_pStatA(:,i) = predConc(:,13) +2.*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + predConc(:,24) + predConc(:,27) + 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + 2*predConc(:,37) + predConc(:,38) + predConc(:,40) + predConc(:,43);
-total_pStatB(:,i) = predConc(:,14) +2.*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + predConc(:,25) + predConc(:,26) + 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + 2*predConc(:,39) + predConc(:,38) + predConc(:,41) + predConc(:,42);
+total_pStatA = results(:,:,13) +2.*results(:,:,15) + results(:,:,16) + results(:,:,19) + 2*results(:,:,21) + results(:,:,23) + results(:,:,24) + results(:,:,27) + 2*results(:,:,28) + results(:,:,29) + results(:,:,31) + results(:,:,33) + 2*results(:,:,37) + results(:,:,38) + results(:,:,40) + results(:,:,43);
+total_pStatB = results(:,:,14) +2.*results(:,:,17) + results(:,:,16) + results(:,:,20) + 2*results(:,:,22) + results(:,:,23) + results(:,:,25) + results(:,:,26) + 2*results(:,:,30) + results(:,:,29) + results(:,:,32) + results(:,:,34) + 2*results(:,:,39) + results(:,:,38) + results(:,:,41) + results(:,:,42);
 
-% pStatA_norm(:,i) = total_pStatA(:,i)./total_pStatA(31,i);% normalized to 30 minute
-% pStatB_norm(:,i) = total_pStatB(:,i)./total_pStatB(31,i);% normalized to 30 minute
+% pStatA_norm(:,:,i) = total_pStatA(:,:,i)./total_pStatA(31,i);% normalized to 30 minute
+% pStatB_norm(:,:,i) = total_pStatB(:,:,i)./total_pStatB(31,i);% normalized to 30 minute
 
-cytosolic_statA(:,i) = predConc(:,3) + predConc(:,11) + predConc(:,13) + 2*predConc(:,15) + predConc(:,16) + predConc(:,19) + 2*predConc(:,21) + predConc(:,23) + 2*predConc(:,24) + predConc(:,26) + predConc(:,27) + predConc(:,48);
-cytosolic_statB(:,i) = predConc(:,4) + predConc(:,12) + predConc(:,14) + 2*predConc(:,17) + predConc(:,16) + predConc(:,20) + 2*predConc(:,22) + predConc(:,23) + 2*predConc(:,25) + predConc(:,26) + predConc(:,27) + predConc(:,49);
+cytosolic_statA = results(:,:,3) + results(:,:,11) + results(:,:,13) + 2*results(:,:,15) + results(:,:,16) + results(:,:,19) + 2*results(:,:,21) + results(:,:,23) + 2*results(:,:,24) + results(:,:,26) + results(:,:,27) + results(:,:,48);
+cytosolic_statB = results(:,:,4) + results(:,:,12) + results(:,:,14) + 2*results(:,:,17) + results(:,:,16) + results(:,:,20) + 2*results(:,:,22) + results(:,:,23) + 2*results(:,:,25) + results(:,:,26) + results(:,:,27) + results(:,:,49);
 
-nuclear_statA(:,i) = 2*predConc(:,28) + predConc(:,29) + predConc(:,31) + predConc(:,33) + predConc(:,35) + 2*predConc(:,37) + predConc(:,38) + 2*predConc(:,40) + predConc(:,42) + predConc(:,43);
-nuclear_statB(:,i) = 2*predConc(:,30) + predConc(:,29) + predConc(:,32) + predConc(:,34) + predConc(:,36) + 2*predConc(:,39) + predConc(:,38) + 2*predConc(:,41) + predConc(:,42) + predConc(:,43);
+nuclear_statA = 2*results(:,:,28) + results(:,:,29) + results(:,:,31) + results(:,:,33) + results(:,:,35) + 2*results(:,:,37) + results(:,:,38) + 2*results(:,:,40) + results(:,:,42) + results(:,:,43);
+nuclear_statB = 2*results(:,:,30) + results(:,:,29) + results(:,:,32) + results(:,:,34) + results(:,:,36) + 2*results(:,:,39) + results(:,:,38) + 2*results(:,:,41) + results(:,:,42) + results(:,:,43);
 
 % total_statA = nuclear_statA*Vratio + cytosolic_statA;
 % total_statB = nuclear_statB*Vratio + cytosolic_statB;
