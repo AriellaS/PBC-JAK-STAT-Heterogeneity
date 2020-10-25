@@ -278,6 +278,8 @@ options = odeset('RelTol',1e-9,'AbsTol',1e-12,'NonNegative',[1:length(initvalues
 % simulate the model
 
 parfor n = 1 : num_samples
+	disp(n);
+
 	selected_initvalues = initvalues;
 	selected_initvalues(2,1) = free_initValues(n,1);
 	selected_initvalues(5,1) = free_initValues(n,2);
@@ -287,6 +289,32 @@ parfor n = 1 : num_samples
 	[~, predConc] = ode15s(@core_file_struct8,predTime,selected_initvalues,options,params);
 	results(n,:,:) = predConc;
 end
+
+% simulate with ramping PRL
+
+% prl_vals = [50, 100, 200, 300];
+prl_vals = [200, 0, 0, 0];
+
+for sim = 1 : length(prl_vals)
+	disp(sim);
+	parfor n = 1 : num_samples
+		if (sim == 1)
+			selected_initvalues = initvalues;
+			selected_initvalues(1,1) = 0;
+			selected_initvalues(2,1) = free_initValues(n,1);
+			selected_initvalues(5,1) = free_initValues(n,2);
+			selected_initvalues(6,1) = free_initValues(n,3);
+			selected_initvalues(7,1) = free_initValues(n,4);
+		else
+			selected_initvalues = initvalues(n,:)';
+		end
+		selected_initvalues(1,1) = selected_initvalues(1,1) + prl_vals(sim) / 22;
+		[~, predConc] = ode15s(@core_file_struct8,predTime,selected_initvalues,options,params);
+		results(sim,n,:,:) = predConc;
+	end
+	initvalues = squeeze(results(sim,:,end,:));
+end
+
 
 % Calculated quantities
 
