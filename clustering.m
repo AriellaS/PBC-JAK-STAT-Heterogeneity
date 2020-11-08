@@ -4,6 +4,7 @@ cluster.JobStorageLocation='/home1/ariellas/matlabJobStorage';
 cluster.NumWorkers=str2num(a);
 
 global progress
+global n_samples
 
 load('data/results/outputs_rampedPRL_24hrs.mat');
 n_samples = 1000;
@@ -22,6 +23,7 @@ delete(pool);
 
 function d = dtwdist(x,y,output)
 	global progress
+	global n_samples
 	progress = progress + 1;
 	disp(num2str(output) + " " + num2str(progress/n_samples * 100))
 	[m,n] = size(y);
