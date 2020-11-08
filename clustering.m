@@ -16,6 +16,9 @@ for output = 1 : 4
 	Z(output,n_samples-1,3) = linkage(D);
 end
 
+save('data/results/linkages_24hrs','Z');
+delete(pool);
+
 function d = dtwdist(x,y)
 	% global indx
 	disp(indx)
@@ -26,8 +29,5 @@ function d = dtwdist(x,y)
 		d(j) = dtw(x,y(j,:));
 	end
 end
-
-save('data/results/linkages_24hrs','Z');
-delete(pool);
 
 
