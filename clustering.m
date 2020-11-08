@@ -1,5 +1,5 @@
 cluster=parallel.cluster.Local();
-cluster.JobStorageLocation='/home1/ariellas/PancreaticBetaCellModeling/JobStorageLocation';
+cluster.JobStorageLocation='/home1/ariellas/matlabJobStorage';
 [a,b]=evalc('system(''nproc --all'')');
 cluster.NumWorkers=str2num(a);
 
