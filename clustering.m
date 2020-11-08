@@ -5,7 +5,8 @@ cluster.NumWorkers=str2num(a);
 
 % global indx
 
-n_samples = 1000
+load('data/results/outputs_24hrs.mat');
+n_samples = 1000;
 pool = parpool(cluster,15);
 
 for output = 1 : 4
@@ -13,7 +14,7 @@ for output = 1 : 4
 	disp(output)
 	data = squeeze(outputs(output,1:n_samples,:));
 	D = pdist(data, @(x,y) dtwdist(x,y));
-	Z(output,n_samples-1,3) = linkage(D);
+	Z(output,:,:) = linkage(D);
 end
 
 save('data/results/linkages_24hrs','Z');
@@ -21,8 +22,8 @@ delete(pool);
 
 function d = dtwdist(x,y)
 	% global indx
-	disp(indx)
-	indx = indx + 1;
+	% disp(indx)
+	% indx = indx + 1;
 	[m,n] = size(y);
 	d = zeros(m,1);
 	parfor j = 1 : m
