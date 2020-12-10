@@ -1,14 +1,14 @@
-cluster=parallel.cluster.Local();
-cluster.JobStorageLocation='/home1/ariellas/matlabJobStorage';
-[a,b]=evalc('system(''nproc --all'')');
-cluster.NumWorkers=str2num(a);
+% cluster=parallel.cluster.Local();
+% cluster.JobStorageLocation='/home1/ariellas/matlabJobStorage';
+% [a,b]=evalc('system(''nproc --all'')');
+% cluster.NumWorkers=str2num(a);
 
 global progress
 global n_samples
 
 load('data/results/outputs_rampedPRL_24hrs.mat');
 n_samples = 1000;
-pool = parpool(cluster,15);
+% pool = parpool(cluster,15);
 
 for output = 1 : 4
 	progress = 1;
@@ -18,7 +18,8 @@ for output = 1 : 4
 	Z(output,:,:) = linkage(D);
 end
 
-save('data/results/linkages_rampedPRL_24hrs','Z');
+save('data/results/distances_rampedPRL_24hrs','Z');
+% save('data/results/linkages_rampedPRL_24hrs','Z');
 delete(pool);
 
 function d = dtwdist(x,y,output)

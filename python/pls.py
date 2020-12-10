@@ -9,23 +9,25 @@ font = {'family' : 'normal',
 
 matplotlib.rc('font', **font)
 
-samples = np.array(spio.loadmat('../data/samples/free_initValues.mat')['free_initValues'])
-data = np.array(spio.loadmat('../data/results/cluster_labels_24hrs.mat')['labels'])
+samples = np.array(spio.loadmat('../data/results/timecourse_classification/initvals_output1_nonan.mat')['free_initValues'])
+# data = np.array(spio.loadmat('../data/results/clusterlabels_24hrs.mat')['C'])
+data = np.array(spio.loadmat('../data/results/timecourse_classification/output1_nonan.mat')['characteristics'])
 
-k = 2
+n_samples = 10000;
 
-results = data[:,k-2,:].transpose()
+results = data;
+# results = data[:,k-2,:].transpose()
 # results = data.reshape(-1,1)
 
 samples = np.log10(samples[:,:4])
-# results = np.log10(results)
+results = np.log10(results)
 
-half = 90
+half = 9000
 # xTrain = samples[:half,:]
 # yTrain = results[:half]
 
-xTrain, xTest = samples[:half,:], samples[half:100,:]
-yTrain, yTest = results[:half], results[half:]
+xTrain, xTest = samples[:half,:], samples[half:,:]
+yTrain, yTest = results[:half,:], results[half:,:]
 
 nComp = 2
 
@@ -35,10 +37,11 @@ model.train(xTrain, yTrain)
 rsquared = model.eval(xTest,yTest)
 print(rsquared)
 
-# yPred = model.predict(xTest)
-# plt.plot(yTest, yPred, 'o')
-# plt.text(0.2,0,"R-squared = " + str(rsquared)[:6])
-# plt.show()
+yPred = model.predict(xTest)
+# yPred = np.rint(yPred)
+plt.plot(yTest.flatten(), yPred.flatten(), 'o')
+plt.text(3,1,"R-squared = " + str(rsquared)[:6])
+plt.show()
 
 print(model.vip())
 model.plot_vip()
