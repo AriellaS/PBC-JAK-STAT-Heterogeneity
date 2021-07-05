@@ -125,8 +125,6 @@ k33 = params(59);
 k34 = params(60);
 k35 = params(61);
 
-
-
 %Specify ODEs
 dydt(1,1) = (k_2*PRLRJ - k2*PRL*RJ)*1.39E-4 - (1 * 0.693 / (6 * 3600) * y(1)); % Adjusted for volume of cell to volume of cytoplasm ratio, 1st order deg with 6 hour half life
 dydt(2,1) = k1 + k_2*PRLRJ - k2*PRL*RJ - k3*PRLRJ*RJ + k_3*PRLRJ2 - kdeg*RJ + k29*Rc;

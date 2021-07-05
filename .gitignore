@@ -1,2 +1,9 @@
 data/
+figures/
+holly_figures/
+holly_results/
+python/__pycache__/
+thinned_parameters/
+error_ranked_parameters/
 *.swp
+.DS_STORE
