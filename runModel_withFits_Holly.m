@@ -157,7 +157,7 @@ for i = 1 : 4 % iterate thru initvals
 
 			free_initvals = [RJ SHP2 PPX PPN];
 
-			free_initvals(i) = free_initvals(i) * factor(j);
+			free_initvals(i) = free_initvals(i) * factors(j);
 
 			initvalues(2) = free_initvals(1);
 			initvalues(5) = free_initvals(2);
