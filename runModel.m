@@ -61,7 +61,7 @@ parfor n = 1 : num_samples
 	initvalues(6) = PPX;
 	initvalues(7) = PPN;
 
-	[~, predConc] = ode15s(@core_file_struct8,predTime,initvalues,options,params);
+	[~, predConc] = ode15s(@core_file,predTime,initvalues,options,params);
 	results(n,:,:) = predConc;
 end
 
@@ -72,7 +72,7 @@ save('holly_results/lowest_error_PredConc.mat','results');
 % params = lowest_error_params;
 % initvalues = lowest_error_initvals;
 %
-% [~, predConc] = ode15s(@core_file_struct8,predTime,initvalues,options,params);
+% [~, predConc] = ode15s(@core_file,predTime,initvalues,options,params);
 % results(:,:) = predConc;
 %
 % save('results/base_PredConc.mat','results');
