@@ -35,8 +35,10 @@ for i = 1 : length(response_labels)
 	y = lowest_error_responses(:,:,i);
 	plot(predTime/3600,y./max(y,[],2),'color',[0 0 0 0.01]);
 	title(response_labels(i));
-	xlabel("Time (hours)");
+	if i > 2
+		xlabel("Time (hours)");
+	end
 end
-sgtitle("Normalized time courses using lowest error parameters");
+% sgtitle("Normalized time courses using lowest error parameters");
 
 

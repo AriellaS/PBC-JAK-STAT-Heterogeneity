@@ -5,8 +5,9 @@ load('../holly_results/lowest_error_shape1.mat');
 
 colors = ["#fa0006" "#15a43f" "#da570e" "#129fec" "#5c1a8e" "#fb009f"];
 labels = {"Height of peak","Height of min","Time of peak","Time of min","Slope from peak to min","Slope from min to 6hrs"};
-response_labels = {"N/C ratio pSTAT5A","N/C ratio pSTAT5B","Relative conc. pSTAT5A","Relative conc. pSTAT5B"};
+response_labels = {"N/C ratio","N/C ratio","Relative conc.","Relative conc."};
 ylabelspacing = "       ";
+y_labels = [{"Nuclear/cytosolic";"ratio pSTAT5A"},{"Nuclear/cytosolic";"ratio pSTAT5B"},{"Relative conc.";"pSTAT5A"},{"Relative conc.";"pSTAT5B"}];
 
 index = reshape(1:6, 3, 2).';
 
@@ -28,19 +29,43 @@ index = reshape(1:6, 3, 2).';
 nbins = 35;
 
 %% only showing responses 1 and 3
+figure(1)
 for i = 1 : 2
 	res = (i-1)*2 + 1; % 1->1 2->3
-	xlabels =  {response_labels(res),"Minutes","Slope"};
+	xlabels =  {response_labels(res),"minutes","slope"};
 	for f = 1 : 6
 		subplot(2,6,(i-1)*6+f);
 		histogram(log10(features(shape1_indicies(:,res),f,res)),nbins,'facecolor',colors(f));
-		title(labels(f))
-		xlabel(xlabels(ceil(f/2)) + " (log10)");
+		if i == 1
+			title(f + ". " + labels(f),'fontsize',15)
+		end
+		xlabel("Log_{10} (" + xlabels(ceil(f/2)) + ")",'fontsize',13);
 		if f == 1
-			ylabel(res + ylabelspacing, 'Rotation', 0,'fontweight','bold','fontsize',16);
+			ylabel(y_labels(:,res),'fontweight','bold','fontsize',16);
 		end
 	end
-	sgtitle("Time course features of responses 1 and 3")
+	% sgtitle("Time course features",'fontsize',24)
+	set(gcf,'Position',[100 100 1500 500])
+end
+
+
+%% only showing responses 2 and 4
+figure(2)
+for i = 1 : 2
+	res = i*2; % 1->2 2->4
+	xlabels =  {response_labels(res),"minutes","slope"};
+	for f = 1 : 6
+		subplot(2,6,(i-1)*6+f);
+		histogram(log10(features(shape1_indicies(:,res),f,res)),nbins,'facecolor',colors(f));
+		if i == 1
+			title(f + ". " + labels(f),'fontsize',15)
+		end
+		xlabel("Log_{10} (" + xlabels(ceil(f/2)) + ")",'fontsize',13);
+		if f == 1
+			ylabel(y_labels(:,res),'fontweight','bold','fontsize',16);
+		end
+	end
+	% sgtitle("Time course features",'fontsize',24)
 	set(gcf,'Position',[100 100 1500 500])
 end
 

@@ -19,7 +19,7 @@ for res = 1 : 4
 
 		numpeaks = length(peaks);
 
-		if (length(mins) > 0 & length(peaks) > 0) % shape 1 must have atleast one min and one max
+		if (length(mins) > 0 & length(peaks) > 0) % shape 1 must have at least one min and one max
 
 			heightdiffs = zeros(numpeaks,1);
 			slopes = zeros(numpeaks,1);

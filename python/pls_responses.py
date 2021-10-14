@@ -17,7 +17,7 @@ responses = np.array(spio.loadmat('../holly_results/lowest_error_responses.mat')
 # free_initvals = np.array(spio.loadmat('../thinned_parameters/thinned_free_initvalues.mat')['samples'])
 # responses = np.array(spio.loadmat('../holly_results/thinned_responses.mat')['responses'])
 
-response_labels = ["Nuclear/cytosolic ratio pSTAT5A","Nuclear/cytosolic ratio pSTAT5B","Relative concentration pSTAT5A","Relative concentration pSTAT5B"]
+response_labels = ["Nuclear/cytosolic\nratio pSTAT5A","Nuclear/cytosolic\nratio pSTAT5B","Relative conc.\npSTAT5A","Relative conc.\npSTAT5B"]
 initval_labels = ["RJ","SHP2","PPX","PPN"]
 
 split = 9000
@@ -60,15 +60,15 @@ for i in range(4):
     ax.annotate("R² = " + str(rsquared)[:6],xy=(newbounds[0]+axrange/3,newbounds[0]+axrange/50))
     # ax.set_xlabel("Actual")
     # ax.set_ylabel("Predicted")
-    ax.set_ylabel(str(i+1)+"    ",rotation=0,fontweight="bold",fontsize=16)
+    ax.set_ylabel(response_labels[i]+"    ",fontweight="bold",fontsize=10)
     # ax.set_title(response_labels[i])
 
     # model.plot_vip()
 
     model.plot_weights(ax=axs[i][1])
 
-axs[0][0].set_title("PLS model prediction vs.\nmechanistic model (log10)\n");
+axs[0][0].set_title("PLS model prediction vs.\nmechanistic model (log₁₀)\n");
 axs[0][1].set_title("Weights\n");
 # plt.show()
-plt.savefig("../holly_figures/pls/v3/lowest_error.png",dpi=300)
+# plt.savefig("../holly_figures/pls/v5/figure_5.png",dpi=300)
 

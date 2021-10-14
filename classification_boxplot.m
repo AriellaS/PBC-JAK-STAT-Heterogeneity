@@ -1,6 +1,6 @@
 clear all;
 
-load('holly_results/boxplot/varied_initval_responses.mat')
+load('holly_results/varied_initval_responses.mat')
 sample_size = size(responses,1);
 
 % peak, peak loc, min, min loc, peak-min slope, min-6hr slope
@@ -10,7 +10,7 @@ recovertime = 361; % 6 hours
 
 for res = 1 : 4
 	for initval = 1 : 4
-		for factor = 1 : 3
+		for factor = 1 : 2
 
 			response = responses(:,:,factor,initval,res);
 
