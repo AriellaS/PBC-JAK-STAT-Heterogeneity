@@ -1,7 +1,7 @@
 clear; clc; close all;
 
 %--- Get free param values
-thinned_params = importdata('thinned_parameters/thinned_parameters.mat');
+% thinned_params = importdata('thinned_parameters/thinned_parameters.mat');
 error_ranked_params = importdata('error_ranked_parameters/error_ranked_parameters.mat');
 lowest_error_params = error_ranked_params(1,:);
 
@@ -45,21 +45,5 @@ responses(:,:,4) = totpB_ratio_totB;
 
 responses(isnan(responses)) = 0;
 
-% nucleus_cyto_ratioA(:,i) = Stat_nucleusA(:,i)./Stat_cytoA(:,i);
-% nucleus_cyto_ratioB(:,i) = Stat_nucleusB(:,i)./Stat_cytoB(:,i);
-
-% transloc_predA(:,i) = nucleus_cyto_ratioA(:,i);
-% transloc_predB(:,i) = nucleus_cyto_ratioB(:,i);
-
-% rec_total(:,i) = predConc(:,2) + predConc(:,8) + 2*predConc(:,9) + 2*predConc(:,10) + 2*predConc(:,11) + 2*predConc(:,12) + 2*predConc(:,18) + 2*predConc(:,47) + 2*predConc(:,48) + 2*predConc(:,49) + 2*predConc(:,50);
-% rec_internalized = 1 - rec_total(:,i)./initvalues(2);
-% intern_pred(i) = rec_internalized(31);
-
-% Bcl fold change
-% Bcl(:,i) = predConc(:,56)./predConc(1,56);
-
- % pJAK2
-% total_pJAK2 = predConc(:,10) + predConc(:,11)+ predConc(:,12)+ predConc(:,18)+ predConc(:,47)+ predConc(:,48)+ predConc(:,49)+ predConc(:,50);
-% pJAK2_norm(:,i) = total_pJAK2./total_pJAK2(11); %Normalized to 10 minute
-
+save('holly_results/lowest_error_responses.mat','responses');
 

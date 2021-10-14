@@ -11,14 +11,14 @@ Data_time = importdata('tspan.mat');
 predTime = [0:60:6*3600];
 
 %--- Thinned
-thinned_params = importdata('thinned_parameters/thinned_parameters.mat');
-thinned_initvals = importdata('thinned_parameters/thinned_initvalues.mat');
-thinned_free_initvals = importdata('thinned_parameters/thinned_free_initvalues.mat');
+% thinned_params = importdata('thinned_parameters/thinned_parameters.mat');
+% thinned_initvals = importdata('thinned_parameters/thinned_initvalues.mat');
+% thinned_free_initvals = importdata('thinned_parameters/thinned_free_initvalues.mat');
 
 %--- Error ranked
 error_ranked_params = importdata('error_ranked_parameters/error_ranked_parameters.mat');
 error_ranked_initvals = importdata('error_ranked_parameters/error_ranked_initval.mat');
-error_ranked_free_initvals = importdata('error_ranked_parameters/error_ranked_free_initvalues.mat');
+% error_ranked_free_initvals = importdata('error_ranked_parameters/error_ranked_free_initvalues.mat');
 
 %--- Lowest error
 lowest_error_params = error_ranked_params(1,:);
@@ -65,6 +65,7 @@ parfor n = 1 : num_samples
 	results(n,:,:) = predConc;
 end
 
+save('holly_results/lowest_error_PredConc.mat','results');
 
 %% simulate base model, lowest error
 
@@ -73,4 +74,5 @@ end
 %
 % [~, predConc] = ode15s(@core_file_struct8,predTime,initvalues,options,params);
 % results(:,:) = predConc;
-
+%
+% save('results/base_PredConc.mat','results');

@@ -1,7 +1,7 @@
 clear; clc; close all;
 
 features = importdata('../holly_results/lowest_error_features.mat');
-shape1_indicies = importdata('../holly_results/lowest_error_shape1.mat');
+shape1_indicies = importdata('../holly_results/lowest_error_shape1.mat').shape1_indicies;
 free_initvals = importdata('../error_ranked_parameters/lowest_error_free_initvalues.mat');
 
 initval_labels = ["RJ","SHP2","PPX","PPN"];
@@ -13,9 +13,8 @@ response_labels = ["Ratio A","Ratio B","Relative A","Relative B"];
 
 for res = 1 : 4
 	figure(res)
-	shape1_index = shape1_indicies(:,res);
-	feature = features(shape1_index,:,res);
-	initval = free_initvals(shape1_index,:);
+	feature = features(shape1_indicies,:,res);
+	initval = free_initvals(shape1_indicies,:);
 	for i = 1 : num_features
 		for j = 1 : num_initvals
 			subplot(num_features,num_initvals,num_initvals*(i-1)+j)
@@ -28,7 +27,6 @@ for res = 1 : 4
 			end
 		end
 	end
-	% sgtitle("Pairwise comparisons of response " + num2str(res) + " time course features and initial values")
 	set(gcf,'Position',[100 100 1000 1000])
 end
 

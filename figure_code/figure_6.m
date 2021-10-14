@@ -18,7 +18,7 @@ index = reshape(1:6, 3, 2).';
 % 	figure(res)
 % 	for f = 1 : 6
 % 		subplot(2,3,index(f));
-% 		histogram(log10(features(shape1_indicies(:,res),f,res)),'facecolor',colors(f));
+% 		histogram(log10(features(shape1_indicies,f,res)),'facecolor',colors(f));
 % 		title(labels(f))
 % 		xlabel(xlabels(ceil(f/2)) + " (log10)");
 % 	end
@@ -35,7 +35,7 @@ for i = 1 : 2
 	xlabels =  {response_labels(res),"minutes","slope"};
 	for f = 1 : 6
 		subplot(2,6,(i-1)*6+f);
-		histogram(log10(features(shape1_indicies(:,res),f,res)),nbins,'facecolor',colors(f));
+		histogram(log10(features(shape1_indicies,f,res)),nbins,'facecolor',colors(f));
 		if i == 1
 			title(f + ". " + labels(f),'fontsize',15)
 		end
@@ -50,13 +50,14 @@ end
 
 
 %% only showing responses 2 and 4
+%% figure S-2
 figure(2)
 for i = 1 : 2
 	res = i*2; % 1->2 2->4
 	xlabels =  {response_labels(res),"minutes","slope"};
 	for f = 1 : 6
 		subplot(2,6,(i-1)*6+f);
-		histogram(log10(features(shape1_indicies(:,res),f,res)),nbins,'facecolor',colors(f));
+		histogram(log10(features(shape1_indicies,f,res)),nbins,'facecolor',colors(f));
 		if i == 1
 			title(f + ". " + labels(f),'fontsize',15)
 		end

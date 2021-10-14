@@ -21,7 +21,7 @@ split_p = .9
 nComp = 2
 
 for i in range(4):
-    shape1_index = shape1_indicies[:,i] == 1
+    shape1_index = np.squeeze(shape1_indicies) == 1
     feature = features[shape1_index,:,i]
     initval = free_initvals[shape1_index,:]
     fig,axs = plt.subplots(6,2,figsize=(6,15))
@@ -75,8 +75,8 @@ for i in range(4):
 
     axs[0][0].set_title(f"PLS model prediction vs.\nmechanistic model " + response_labels[i] + " (log₁₀)\n");
     axs[0][1].set_title("Weights\n");
-    # plt.show()
-    if i == 0:
-        plt.savefig(f"../holly_figures/pls_features/v5/figure_8.png",dpi=300)
-    else:
-        plt.savefig(f"../holly_figures/pls_features/v5/{i+1}.png",dpi=300)
+    plt.show()
+    # if i == 0:
+    #     plt.savefig(f"../holly_figures/pls_features/v6/figure_8.png",dpi=300)
+    # else:
+    #     plt.savefig(f"../holly_figures/pls_features/v6/{i+1}.png",dpi=300)

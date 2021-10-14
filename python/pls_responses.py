@@ -11,12 +11,6 @@ matplotlib.rc('font', **font)
 free_initvals = np.array(spio.loadmat('../error_ranked_parameters/lowest_error_free_initvalues.mat')['samples'])
 responses = np.array(spio.loadmat('../holly_results/lowest_error_responses.mat')['responses'])
 
-# free_initvals = np.array(spio.loadmat('../error_ranked_parameters/error_ranked_free_initvalues.mat')['samples'])
-# responses = np.array(spio.loadmat('../holly_results/error_ranked_responses.mat')['responses'])
-
-# free_initvals = np.array(spio.loadmat('../thinned_parameters/thinned_free_initvalues.mat')['samples'])
-# responses = np.array(spio.loadmat('../holly_results/thinned_responses.mat')['responses'])
-
 response_labels = ["Nuclear/cytosolic\nratio pSTAT5A","Nuclear/cytosolic\nratio pSTAT5B","Relative conc.\npSTAT5A","Relative conc.\npSTAT5B"]
 initval_labels = ["RJ","SHP2","PPX","PPN"]
 
@@ -69,6 +63,6 @@ for i in range(4):
 
 axs[0][0].set_title("PLS model prediction vs.\nmechanistic model (log₁₀)\n");
 axs[0][1].set_title("Weights\n");
-# plt.show()
+plt.show()
 # plt.savefig("../holly_figures/pls/v5/figure_5.png",dpi=300)
 

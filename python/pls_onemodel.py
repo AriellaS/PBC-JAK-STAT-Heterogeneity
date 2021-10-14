@@ -62,7 +62,7 @@ for i in range(4):
 
 plt.show()
 
-    # create equal bounds on x and y axes
+# create equal bounds on x and y axes
 #     xbound = ax.get_xbound()
 #     ybound = ax.get_ybound()
 #     newbounds = [min(xbound[0],ybound[0]),max(xbound[1],ybound[1])];

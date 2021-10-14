@@ -68,4 +68,7 @@ for res = 1 : 4
 	end
 end
 
-shape1_indicies = logical(shape1_indicies);
+shape1_indicies = all(logical(shape1_indicies),2);
+
+save('holly_results/lowest_error_shape1.mat')
+save('holly_results/lowest_error_features.mat')

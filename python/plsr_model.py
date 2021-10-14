@@ -157,7 +157,7 @@ class PLS_Model():
 
                 # print(self._Wstar)
                 ax.bar(x, self._Wstar[:,0].A1, tick_label=self._labels,color=colors)
-                # ax.set_box_aspect(1)
+                ax.set_box_aspect(1)
                 ax.set_ylim(-1,1)
                 ax.plot([0, 1], [0.5, 0.5], 'k', transform=ax.transAxes,linewidth=0.5)
                 # ax.set_title('Weights')

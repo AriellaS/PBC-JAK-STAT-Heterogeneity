@@ -5,8 +5,6 @@ clear; clc; close all;
 error_ranked_initvals = importdata('error_ranked_parameters/error_ranked_initval.mat');
 lowest_error_initvals = error_ranked_initvals(1,:);
 
-% selected_initvals = thinned_initvals;
-% selected_initvals = error_ranked_initvals;
 selected_initvals = lowest_error_initvals;
 
 indicies = [2,5,6,7];
@@ -19,4 +17,6 @@ A = log10(x ./ fold);
 B = log10(x .* fold);
 z = rand(num_samples,4);
 samples = 10.^(A + (B-A).*z);
+
+save('error_ranked_parameters/lowest_error_free_initvalues.mat','samples');
 
